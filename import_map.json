@@ -1,0 +1,8 @@
+{
+    "imports": {
+        "puppeteer" : "https://deno.land/x/puppeteer@16.2.0/mod.ts",
+        "server" : "https://deno.land/std@0.171.0/http/server.ts",
+        "hono" : "https://deno.land/x/hono@v3.0.0-rc.3/mod.ts"
+
+    }
+}
