@@ -30,7 +30,7 @@ const movies = await getMovies({
   baseUrl: BASE_URL,
   listings: allListings,
 });
-await Deno.writeTextFile("data.json", JSON.stringify(movies, null, 2));
+await Deno.writeTextFile("/data/movies.json", JSON.stringify(movies, null, 2));
 
 /*
 const temp_url =
