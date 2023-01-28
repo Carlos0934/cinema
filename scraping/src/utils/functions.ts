@@ -1,4 +1,5 @@
 import { ElementHandle } from "puppeteer";
+import { Listing, ListingEntry } from "../types.ts";
 export const extractText = (
   container: ElementHandle,
   selector: string
@@ -78,32 +79,6 @@ export function parseSpanishDateToIso(text: string) {
 
   return date.toISOString();
 }
-
-export type ListingEntry = {
-  language: string;
-  showTimes: string[];
-  theater: string;
-  id: number;
-};
-export type Listing = {
-  languages: string[];
-  showTimes: string[];
-  theaters: string[];
-  id: number;
-};
-export type MovieEntry = {
-  title: string;
-  releaseDate: string | null;
-  duration: number | null;
-  gender: string[];
-  classification: string | null;
-  protagonists: string[];
-  directors: string[];
-  writers: string[];
-  synopsis: string | null;
-};
-
-export type Movie = MovieEntry & Listing;
 
 export const listingReducer = (
   acc: Record<string, Listing>,

@@ -1,15 +1,14 @@
 import { Page, ElementHandle } from "puppeteer";
 import {
   extractText,
-  ListingEntry,
   listingReducer,
-  Movie,
-  MovieEntry,
   numberFromText,
   parseSpanishDateToIso,
   parseStringDuration,
   parseStringTime,
-} from "./utils.ts";
+} from "./functions.ts";
+
+import { Movie, MovieEntry, ListingEntry } from "../types.ts";
 
 export const scrapeMoviePoster = async (page: Page): Promise<MovieEntry> => {
   const container = (await page.$("#main")!) as ElementHandle;
@@ -156,4 +155,30 @@ export const getMovies = async ({
     movies.push({ ...entry, ...value });
   }
   return movies;
+};
+
+export const getTheaterListings = async ({
+  BASE_URL,
+  page,
+}: {
+  page: Page;
+  BASE_URL: string;
+}) => {
+  const homePage = `${BASE_URL}/location/republica-dominicana/`;
+  await page.goto(homePage);
+
+  const links: string[] = await page.$$eval(
+    "#menu > ul > li:nth-child(4) > ul  li  a",
+    (nodes) => nodes.map((node) => node.getAttribute("href"))
+  );
+  const theatersLinks = links.filter((link) => link.includes("theater"));
+
+  const allListings: ListingEntry[] = [];
+  for (const link of theatersLinks) {
+    await page.goto(link.replace("//", "https://"));
+    console.log(link);
+    const listings = await getListings(page);
+    allListings.push(...listings);
+  }
+  return allListings;
 };
